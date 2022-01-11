@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+      crossorigin="anonymous"
+    />
+    <title>weather app</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+      integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+      integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <a class="navbar-brand" href="#">
+        <div class="input-group mb-3" style="margin-left: 5vw">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Enter city name"
+            aria-label="Recipient's username"
+            aria-describedby="button-addon2"
+            id="ip1"
+            oninput="debouncing()"
+          />
+          <div class="input-group-append">
+            <button
+              class="btn btn-outline-secondary"
+              type="button"
+              id="button-addon2"
+              onClick="checkDetail()"
+            >
+              <span aria-hidden="true1">&#128269;</span>
+            </button>
+          </div>
+        </div>
+        <div
+          class="card"
+          id="cardP"
+          style="
+            position: absolute;
+            margin-left: 3.2vw;
+            width: 50vh;
+            z-index: 1;
+            margin-top: -15px;
+            display: none;
+          "
+        >
+          <div class="card-body" id="cardC"></div>
+        </div>
+      </a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarNav"
+        aria-controls="navbarNav"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <!-- <button type="button" class="btn btn-link">Data</button> -->
+            <div class="dropdown">
+              <a
+                class="btn btn-link dropdown-toggle"
+                href="#"
+                role="button"
+                id="dropdownMenuLink"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+              >
+                Data
+              </a>
+
+              <div
+                class="dropdown-menu bg-dark"
+                aria-labelledby="dropdownMenuLink"
+              >
+                <a
+                  class="dropdown-item"
+                  href="#"
+                  style="color: rgb(69, 69, 214)"
+                  onclick="checkDetailofCity('Ahemdabad')"
+                  >Ahemdabad</a
+                >
+                <a
+                  class="dropdown-item"
+                  style="color: rgb(69, 69, 214)"
+                  href="#"
+                  onclick="checkDetailofCity('Delhi')"
+                  >Delhi</a
+                >
+                <a
+                  class="dropdown-item"
+                  style="color: rgb(69, 69, 214)"
+                  href="#"
+                  onclick="checkDetailofCity('Mumbai')"
+                  >Mumbai</a
+                >
+                <a
+                  class="dropdown-item"
+                  style="color: rgb(69, 69, 214)"
+                  href="#"
+                  onclick="checkDetailofCity('Kolkata')"
+                  >Kolkata</a
+                >
+                <a
+                  class="dropdown-item"
+                  style="color: rgb(69, 69, 214)"
+                  href="#"
+                  >Chennai</a
+                >
+              </div>
+            </div>
+          </li>
+          <li class="nav-item active">
+            <button
+              type="button"
+              class="btn btn-link"
+              data-toggle="modal"
+              data-target="#exampleModal"
+            >
+              Check Your Location
+            </button>
+          </li>
+          <li class="nav-item">
+            <button type="button" class="btn btn-link">Login</button>
+          </li>
+          <li class="nav-item">
+            <button type="button" class="btn btn-link">Signup</button>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- Button trigger modal -->
+    <!-- <button
+      type="button"
+      class="btn btn-primary"
+      data-toggle="modal"
+      data-target="#exampleModal"
+    >
+      Check Your Location
+    </button> -->
+
+    <!-- Modal -->
+    <div
+      class="modal fade"
+      id="exampleModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">
+              Please click on map
+            </h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              id="detect"
+              onClick="checkLocation()"
+            >
+              <span aria-hidden="true1">&#128506;</span>
+            </button>
+            <p id="para1" class="badge badge-info"></p>
+          </div>
+          <div class="modal-footer">
+            <!-- <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button> -->
+            <!-- <button type="button" class="btn btn-primary">Click Here</button> -->
+            <button
+              type="button"
+              class="btn btn btn-secondary"
+              data-toggle="popover"
+              title="it will automatically take location"
+              data-content="You can know your home town's weather in just one click"
+            >
+              i
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div
+        class="card border-light mb-3"
+        style="max-width: 100rem; max-height: 100vh"
+      >
+        <div class="card-header" id="Header"></div>
+        <div class="card-body">
+          <h5 class="card-title" id="title">No. 1 weather app</h5>
+          <!-- <p class="card-text" id="cardText">
+            Some quick example text to build on the card title and make up the
+            bulk of the card's content.
+          </p> -->
+          <div class="jumbotron jumbotron-fluid">
+            <div class="container">
+              <h1 class="display-4">Full Weather Detail</h1>
+              <p class="lead" id="lead"></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="progress" style="margin-top: 5vh">
+      <div
+        class="progress-bar bg-info"
+        role="progressbar"
+        style="width: 100%"
+        aria-valuenow="50"
+        aria-valuemin="0"
+        aria-valuemax="100"
+      ></div>
+    </div>
+  </body>
+</html>
+
+<script src="weatherApi.js"></script>
